@@ -1,0 +1,45 @@
+services:
+  nextjs-server:
+    container_name: appserver
+    build:
+      context: packages/nextjs-application
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+
+#  otel-collector:
+#    image: otel/opentelemetry-collector-contrib:0.114.0
+#    volumes:
+#      - ./packages/otel-collector/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+#    environment:
+#      HONEYCOMB_API_KEY: $HONEYCOMB_API_KEY
+#    ports:
+#      - "4317:4317" # OTLP gRPC receiver
+#      - "4318:4318" # OTLP http receiver
+
+  postgres:
+    image: postgres:15.4
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: library_user
+      POSTGRES_PASSWORD: library_password
+      POSTGRES_DB: library
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  flyway:
+    image: flyway/flyway:latest
+    depends_on:
+      - postgres
+    command: -configFiles=/flyway/conf/flyway.conf -locations=filesystem:/flyway/sql migrate
+    volumes:
+      - ./flyway.conf:/flyway/conf/flyway.conf:ro
+      - ./db/migrations:/flyway/sql
+
+volumes:
+  postgres_data:
