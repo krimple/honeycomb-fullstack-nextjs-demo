@@ -1,6 +1,4 @@
-# TODO - edit this
+## README coming soon...
 
-## Key settings in Next.js
 
-* Uses the Docker build file at https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile as a guide
-* Set 
+Uses the Docker build file at https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile as a guide
