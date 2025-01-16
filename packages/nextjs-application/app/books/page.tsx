@@ -24,7 +24,7 @@ export default function Page() {
 
     return (
         <div>
-            <h2>Customers</h2>
+            <h2>Book List</h2>
             <button onClick={handleLoadLibraryBooks}>
                 Load books
             </button>
